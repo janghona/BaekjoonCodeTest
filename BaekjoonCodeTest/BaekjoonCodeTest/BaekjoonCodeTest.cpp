@@ -2,38 +2,43 @@
 #include<string>
 using namespace std;
 
+const int MAX = 100000;
+
 class Stack {
+private:
+	int intStack[MAX];
+	int index;
 public:
-	int intStack[10000];
-	int ntop;
-public:
-	Stack() : ntop(-1)
+	Stack() : index(-1)
 	{}
 	~Stack() {}
 
+	int* getIntStack() { return intStack; }
+	int getIndex() { return index; }
+
 	void push(int value) {
-		ntop++;
-		intStack[ntop] = value;
+		index++;
+		intStack[index] = value;
 	}
 
 	int pop() {
 		if (isEmpty() == true) return -1;
-		ntop--;
-		return intStack[ntop + 1];
+		index--;
+		return intStack[index + 1];
 	}
 
 	int size() {
-		return ntop + 1;
+		return index + 1;
 	}
 
 	bool isEmpty() {
-		if (ntop == -1) return true;
+		if (index == -1) return true;
 		else return false;
 	}
 
 	int top() {
 		if (isEmpty() == true) return -1;
-		else return intStack[ntop];
+		else return intStack[index];
 	}
 
 };
@@ -41,30 +46,24 @@ int main()
 {
 	Stack s;
 	int input;
-	string cmdBuf;
+	int num;
+	int sum = 0;
 
 	cin >> input;
-	if (1 > input || input > 10000) return 0;
+	if (1 > input || input > 100000) return 0;
 	for (int i = 0; i < input; i++) {
-		cin >> cmdBuf;
+		cin >> num;
 
-		if (cmdBuf == "push") {
-			int num;
-			cin >> num;
+		if (num == 0) {
+			s.pop();
+		}
+		else {
 			s.push(num);
 		}
-		else if (cmdBuf == "top") {
-			cout << s.top() << endl;
-		}
-		else if (cmdBuf == "size") {
-			cout << s.size() << endl;
-		}
-		else if (cmdBuf == "empty") {
-			cout << s.isEmpty() << endl;
-		}
-		else if (cmdBuf == "pop") {
-			cout << s.pop() << endl;
-		}
 	}
+	for (int i = 0; i <= s.getIndex(); i++) {
+		sum += s.getIntStack()[i];
+	}
+	cout << sum;
 	return 0;
 }
