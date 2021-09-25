@@ -2,7 +2,7 @@
 #include<string>
 using namespace std;
 
-const int MAX = 1000;
+const int MAX = 100;
 
 class Stack {
 private:
@@ -39,27 +39,29 @@ public:
 };
 
 bool check(Stack& s,const char* buf) {
-	for (int j = 0; buf[j] != '\0'; j++) {
-		if (buf[j] == '(') {s.push(buf[j]);}
-		else{
-			if (!s.isEmpty()) { s.pop(); }
+	for (int j = 0; buf[j] != '.'; j++) {
+		if (buf[j] == '(' || buf[j] == '[') {s.push(buf[j]);}
+		else if(buf[j] == ')'){
+			if (!s.isEmpty() && s.top() == '(') { s.pop(); }
 			else {return false;}
+		}
+		else if (buf[j] == ']') {
+			if (!s.isEmpty()&& s.top() == '[') { s.pop(); }
+			else { return false; }
 		}
 	}
 	return s.isEmpty();
 }
 int main()
 {
-	int input;
-	cin >> input;
-
-	for (int i = 0; i < input; i++) {
+	while (true) {
 		Stack s;
-		char buf[51];
-		cin >> buf;
+		char buf[101];
+		cin.getline(buf,101);
 		
-		if (check(s, buf)) cout << "YES" << endl;
-		else cout << "NO" << endl;
+		if (buf[0] == '.') break;
+		if (check(s, buf)) cout << "yes" << endl;
+		else cout << "no" << endl;
 	}
 	return 0;
 }
