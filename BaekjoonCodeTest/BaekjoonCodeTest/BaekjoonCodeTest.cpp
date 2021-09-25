@@ -2,68 +2,64 @@
 #include<string>
 using namespace std;
 
-const int MAX = 100000;
+const int MAX = 1000;
 
 class Stack {
 private:
-	int intStack[MAX];
+	char cStack[MAX];
 	int index;
 public:
 	Stack() : index(-1)
 	{}
 	~Stack() {}
 
-	int* getIntStack() { return intStack; }
+	char* getIntStack() { return cStack; }
 	int getIndex() { return index; }
 
-	void push(int value) {
+	void push(const char buf) {
 		index++;
-		intStack[index] = value;
+		cStack[index] = buf;
 	}
 
-	int pop() {
-		if (isEmpty() == true) return -1;
-		index--;
-		return intStack[index + 1];
+	char pop() {
+		if (!isEmpty()) {
+			index--;
+			return cStack[index + 1];
+		}
 	}
 
-	int size() {
-		return index + 1;
-	}
+	int size() {return index + 1;}
 
 	bool isEmpty() {
 		if (index == -1) return true;
 		else return false;
 	}
 
-	int top() {
-		if (isEmpty() == true) return -1;
-		else return intStack[index];
-	}
-
+	char top() {if (index != -1) return cStack[index];}
 };
+
+bool check(Stack& s,const char* buf) {
+	for (int j = 0; buf[j] != '\0'; j++) {
+		if (buf[j] == '(') {s.push(buf[j]);}
+		else{
+			if (!s.isEmpty()) { s.pop(); }
+			else {return false;}
+		}
+	}
+	return s.isEmpty();
+}
 int main()
 {
-	Stack s;
 	int input;
-	int num;
-	int sum = 0;
-
 	cin >> input;
-	if (1 > input || input > 100000) return 0;
-	for (int i = 0; i < input; i++) {
-		cin >> num;
 
-		if (num == 0) {
-			s.pop();
-		}
-		else {
-			s.push(num);
-		}
+	for (int i = 0; i < input; i++) {
+		Stack s;
+		char buf[51];
+		cin >> buf;
+		
+		if (check(s, buf)) cout << "YES" << endl;
+		else cout << "NO" << endl;
 	}
-	for (int i = 0; i <= s.getIndex(); i++) {
-		sum += s.getIntStack()[i];
-	}
-	cout << sum;
 	return 0;
 }
