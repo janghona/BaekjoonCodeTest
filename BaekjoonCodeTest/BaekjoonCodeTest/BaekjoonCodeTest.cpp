@@ -1,67 +1,46 @@
-﻿#include<iostream>
-#include<string>
+﻿#include <iostream>
+#include <queue>
+#include <string>
 using namespace std;
 
-const int MAX = 100;
+int main() {
+	cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	queue <int> q;
+	int N, num;
+	string input;
 
-class Stack {
-private:
-	char cStack[MAX];
-	int index;
-public:
-	Stack() : index(-1)
-	{}
-	~Stack() {}
-
-	char* getIntStack() { return cStack; }
-	int getIndex() { return index; }
-
-	void push(const char buf) {
-		index++;
-		cStack[index] = buf;
-	}
-
-	char pop() {
-		if (!isEmpty()) {
-			index--;
-			return cStack[index + 1];
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		cin >> input;
+		if (input.compare("push") == 0) {
+			cin >> num;
+			q.push(num);
+		}
+		else if (input.compare("pop") == 0) {
+			if (q.empty())
+				cout << -1 << '\n';
+			else {
+				num = q.front();
+				cout << num << '\n';
+				q.pop();
+			}
+		}
+		else if (input.compare("size") == 0)
+			cout << q.size() << '\n';
+		else if (input.compare("empty") == 0)
+			cout << q.empty() << '\n';
+		else if (input.compare("front") == 0) {
+			if (q.empty())
+				cout << -1 << '\n';
+			else
+				cout << q.front() << '\n';
+		}
+		else if (input.compare("back") == 0) {
+			if (q.empty())
+				cout << -1 << '\n';
+			else
+				cout << q.back() << '\n';
 		}
 	}
-
-	int size() {return index + 1;}
-
-	bool isEmpty() {
-		if (index == -1) return true;
-		else return false;
-	}
-
-	char top() {if (index != -1) return cStack[index];}
-};
-
-bool check(Stack& s,const char* buf) {
-	for (int j = 0; buf[j] != '.'; j++) {
-		if (buf[j] == '(' || buf[j] == '[') {s.push(buf[j]);}
-		else if(buf[j] == ')'){
-			if (!s.isEmpty() && s.top() == '(') { s.pop(); }
-			else {return false;}
-		}
-		else if (buf[j] == ']') {
-			if (!s.isEmpty()&& s.top() == '[') { s.pop(); }
-			else { return false; }
-		}
-	}
-	return s.isEmpty();
-}
-int main()
-{
-	while (true) {
-		Stack s;
-		char buf[101];
-		cin.getline(buf,101);
-		
-		if (buf[0] == '.') break;
-		if (check(s, buf)) cout << "yes" << endl;
-		else cout << "no" << endl;
-	}
-	return 0;
 }
